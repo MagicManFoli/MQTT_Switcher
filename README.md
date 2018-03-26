@@ -20,3 +20,6 @@ Check Status:
 systemctl status MQTT_Switcher.service
 
 
+It might be necessary to configure your Pi to wait for network connections before starting services:
+sudo raspi-config -> Boot -> Wait for Network at Boot 
+sudo reboot now
