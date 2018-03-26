@@ -1,8 +1,10 @@
 [Unit]
 Description=Converts MQTT to 433MHz, used for radio sockets
+After=network-online.target
+Requires=network-online.target
 
 [Service]
-ExecStart=/home/pi/MQTT_Switcher.py
+ExecStart=/usr/bin/python3 /home/pi/MQTT_Switcher/MQTT_Switcher.py
 
 [Install]
 WantedBy=multi-user.target
