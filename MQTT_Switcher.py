@@ -48,9 +48,10 @@ def exec_send(number, state):
 
 
 def main():
+    print("---------------------------------------------------------------")
     print("Starting sub_Switch, a tool to transfer MQTT commands to 433MHz")
 
-    logging.basicConfig(filename='MQTT_Switcher.log', filemode='w', level=logging.DEBUG, format=formatter)
+    logging.basicConfig(filename='/home/pi/MQTT_Switcher/MQTT_Switcher.log', filemode='a', level=logging.DEBUG, format=formatter)
     logging.info("Initialising... ")
 
     client = mqtt.Client()
@@ -63,6 +64,8 @@ def main():
     logging.info("starting server")
     # starting blocking execution
     client.loop_forever()
+
+    print("main is done, this should never happen")
 
     # never getting here
     return 0
