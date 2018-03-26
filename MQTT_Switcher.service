@@ -2,7 +2,7 @@
 Description=Converts MQTT to 433MHz, used for radio sockets
 
 [Service]
-ExecStart=/home/pi/MQTT_Switcher.py
+ExecStart=~/MQTT_Switcher/MQTT_Switcher.py
 
 [Install]
 WantedBy=multi-user.target
