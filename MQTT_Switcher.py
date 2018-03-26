@@ -50,7 +50,7 @@ def exec_send(number, state):
 def main():
     print("Starting sub_Switch, a tool to transfer MQTT commands to 433MHz")
 
-    logging.basicConfig(filename='/home/pi/sub_Switch.log', filemode='w', level=logging.DEBUG, format=formatter)
+    logging.basicConfig(filename='MQTT_Switcher.log', filemode='w', level=logging.DEBUG, format=formatter)
     logging.info("Initialising... ")
 
     client = mqtt.Client()
