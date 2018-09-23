@@ -1,5 +1,5 @@
-#!/usr/bin/env python3.6
-# author: MF
+#!python3
+# author: Modisch Fabrications
 # listens to MQTT and switches 433MHz radio sockets
 
 import subprocess
@@ -8,6 +8,7 @@ import logging
 from logging import Logger
 from logging.handlers import RotatingFileHandler
 from typing import Dict
+import sys
 
 import paho.mqtt.client as mqtt
 
@@ -18,7 +19,7 @@ rf_pattern = re.compile("[01]{5} [1-5]")
 root_topic = "Switches/#"
 
 project_name = "MQTT_Switcher"
-revision = 2
+revision = 3
 
 
 class Bridge:
@@ -82,10 +83,13 @@ class Bridge:
 
 
 def main():
+    if sys.version_info[1] < 6:
+        raise EnvironmentError("Can't run in pre 3.6 Environments!")
+
     logger = get_logger(project_name)
     logger.info(f" --- Starting {project_name} [v{revision}], a tool to transfer MQTT commands to 433MHz --- ")
 
-    bridge = Bridge(logger, mappings.TtoID)
+    bridge = Bridge(logger, mappings.topic_to_id)
     # start [blocking]
     bridge.start()
 
