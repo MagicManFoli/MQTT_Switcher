@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 # author: MF
 # listens to MQTT and switches 433MHz radio sockets
 
@@ -18,6 +18,7 @@ rf_pattern = re.compile("[01]{5} [1-5]")
 root_topic = "Switches/#"
 
 project_name = "MQTT_Switcher"
+revision = 2
 
 
 class Bridge:
@@ -58,7 +59,7 @@ class Bridge:
         self._exec_send(self._mappings[subtopic], state)
 
     def _exec_send(self, rf_id, state):
-        self._logger.info("sending state {state} for 433 MHz ID {rf_id}")
+        self._logger.info(f"sending state {state} for 433 MHz ID {rf_id}")
 
         try:
             bash_command = f"/home/pi/raspberry-remote/send {rf_id} {state}"
@@ -82,7 +83,7 @@ class Bridge:
 
 def main():
     logger = get_logger(project_name)
-    logger.info(f" --- Starting {project_name}, a tool to transfer MQTT commands to 433MHz --- ")
+    logger.info(f" --- Starting {project_name} [v{revision}], a tool to transfer MQTT commands to 433MHz --- ")
 
     bridge = Bridge(logger, mappings.TtoID)
     # start [blocking]
