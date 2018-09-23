@@ -14,6 +14,9 @@ import paho.mqtt.client as mqtt
 
 import mappings
 
+if sys.version_info[1] < 6:
+    raise EnvironmentError("Can't run in pre 3.6 Environments!")
+
 formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
 rf_pattern = re.compile("[01]{5} [1-5]")
 root_topic = "Switches/#"
@@ -83,9 +86,6 @@ class Bridge:
 
 
 def main():
-    if sys.version_info[1] < 6:
-        raise EnvironmentError("Can't run in pre 3.6 Environments!")
-
     logger = get_logger(project_name)
     logger.info(f" --- Starting {project_name} [v{revision}], a tool to transfer MQTT commands to 433MHz --- ")
 
