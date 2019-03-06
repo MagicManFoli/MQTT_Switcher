@@ -1,6 +1,6 @@
 #!python3
 # author: Modisch Fabrications
-# listens to MQTT and switches 433MHz radio sockets
+# listens to MQTT events and switches 433MHz radio sockets
 
 import subprocess
 import re
@@ -12,26 +12,29 @@ import sys
 
 import paho.mqtt.client as mqtt
 
-import mappings
+import mapping
 
 if sys.version_info[1] < 6:
     raise EnvironmentError("Can't run in pre 3.6 Environments!")
 
 formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
 rf_pattern = re.compile("[01]{5} [1-5]")
-root_topic = "Switches/#"
 
 project_name = "MQTT_Switcher"
-revision = 3
+revision = 4
 
 
 class Bridge:
 
-    def __init__(self, logger: Logger, mapping: Dict[str, str]):
+    def __init__(self, logger: Logger, mapping: Dict[str, str], root_topic, host="localhost", port=1883):
         self._logger = logger
-        self._mappings = mapping
 
+        self._mappings = mapping
         self.check_validity(mapping)
+
+        self._root_topic = root_topic
+        self._port = port
+        self._host = host
 
         self._client = mqtt.Client()
         self._client.on_connect = self._on_con
@@ -46,13 +49,14 @@ class Bridge:
             if rf_pattern.match(value) is None:
                 raise ValueError(value)
 
+        # could be shorter but less comprehensible:
         # any(rf_pattern.match(v) is None for v in mappings.TtoID.values())
 
     def _on_con(self, client, userdata, flags, rc):
         self._logger.debug(f"Connected to MQTT-Broker with Code {rc}")
 
         # subscribe here to renew on connection reset
-        client.subscribe(root_topic, 2)
+        client.subscribe(self._root_topic, 2)
 
     def _on_msg(self, client, userdata, msg):
         self._logger.debug(f"msg received on topic <{msg.topic}> with payload <{msg.payload}>")
@@ -66,6 +70,7 @@ class Bridge:
         self._logger.info(f"sending state {state} for 433 MHz ID {rf_id}")
 
         try:
+            # this is unsafe but I see no other "easy" way
             bash_command = f"/home/pi/raspberry-remote/send {rf_id} {state}"
             subprocess.check_call(bash_command.split(), timeout=10)
         except subprocess.TimeoutExpired:
@@ -78,7 +83,7 @@ class Bridge:
         self._logger.debug("message was sent")
 
     def start(self):
-        self._client.connect("192.168.178.101", 1883, 60)
+        self._client.connect(self._host, self._port, 60)
 
         self._logger.info("Starting bridge [blocking]")
         # starting blocking execution
@@ -89,7 +94,7 @@ def main():
     logger = get_logger(project_name)
     logger.info(f" --- Starting {project_name} [v{revision}], a tool to transfer MQTT commands to 433MHz --- ")
 
-    bridge = Bridge(logger, mappings.topic_to_id)
+    bridge = Bridge(logger, mapping.topic_to_id, mapping.root_topic, mapping.mqtt_host, mapping.mqtt_port)
     # start [blocking]
     bridge.start()
 

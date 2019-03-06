@@ -5,8 +5,4 @@ name = "pypi"
 
 [packages]
 paho-mqtt = "*"
-
-[dev-packages]
-
-[requires]
-python_version = "3.6"
+# rpi-rf = "*"
