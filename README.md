@@ -9,7 +9,7 @@ It might be necessary to configure your Pi to wait for network connections befor
 1. `sudo reboot now`
 
 Make sure to have `raspberry-remote` installed in your home directory.
-
+Modify the python path in *.service for your system, this (kind of hacky) version depends on >3.6.
 
 Start this with your system by using a few of these commands:
 1. Stop running service: `sudo systemctl stop MQTT_Switcher`
