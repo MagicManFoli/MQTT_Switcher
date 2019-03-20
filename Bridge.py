@@ -54,8 +54,8 @@ class Bridge:
         try:
             # this is unsafe but I see no other "easy" way
             # this should eventually be replaced by "rpi-rf"
-            return_value = subprocess.run(["/home/pi/raspberry-remote/send", rf_id, state],
-                                          check=True, capture_output=True,
+            return_value = subprocess.run(["/home/pi/raspberry-remote/send", str(rf_id), str(state)],
+                                          check=True, capture_output=True, text=True,
                                           timeout=10)
             self._logger.debug("\t" + return_value.stdout)
 
