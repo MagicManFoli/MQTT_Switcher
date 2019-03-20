@@ -57,7 +57,8 @@ class Bridge:
             return_value = subprocess.run(["/home/pi/raspberry-remote/send", str(rf_id), str(state)],
                                           check=True, capture_output=True, text=True,
                                           timeout=10)
-            self._logger.debug("\t" + return_value.stdout)
+            self._logger.debug("STDOUT:" + return_value.stdout)
+            self._logger.debug("STDERR:" + return_value.stderr)
 
         except subprocess.TimeoutExpired:
             self._logger.error("remote failed, timeout")
