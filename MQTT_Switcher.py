@@ -3,7 +3,6 @@
 # listens to MQTT events and switches 433MHz radio sockets
 
 import logging
-import re
 import sys
 import time
 from logging.handlers import RotatingFileHandler
@@ -15,7 +14,6 @@ if sys.version_info[1] < 6:
     raise EnvironmentError("Can't run in pre 3.6 Environments!")
 
 formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
-rf_pattern = re.compile("[01]{5} [1-5]")
 
 project_name = "MQTT_Switcher"
 revision = 5

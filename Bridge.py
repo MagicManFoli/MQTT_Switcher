@@ -1,12 +1,14 @@
+import re
 import subprocess
 from logging import Logger
 from typing import Dict, Tuple
 
 import paho.mqtt.client as mqtt
 
-from MQTT_Switcher import rf_pattern
+Address_Mapping = Dict[str, Tuple[str, str]]
 
-Address_Mapping = Dict[str, Tuple[str, int]]
+system_code_pattern = re.compile("[01]{5}")
+unit_code_pattern = re.compile("[1-5]")
 
 
 class Bridge:
@@ -29,9 +31,11 @@ class Bridge:
         """
         Used to prevent dict-key exploits when executing shell command
         """
-        for value in mapping.values():
-            if rf_pattern.match(value) is None:
-                raise ValueError(value)
+        for system_code, unit_code in mapping.values():
+            if system_code_pattern.match(system_code) is None:
+                raise ValueError(f"Invalid systemCode: {system_code}")
+            if unit_code_pattern.match(unit_code) is None:
+                raise ValueError(f"Invalid unitCode: {unit_code}")
 
         # could be shorter but less comprehensible:
         # any(rf_pattern.match(v) is None for v in mappings.TtoID.values())
