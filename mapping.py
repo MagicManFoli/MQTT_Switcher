@@ -8,6 +8,7 @@ mqtt_host = "192.168.178.100"
 # def: 1883
 mqtt_port = 1883
 
+restart_delays = (1, 60, 60 * 60)  # in seconds
 
 # first block is your address space, second your channel (A-E)
 # Most remotes only have 4 buttons, which leaves a "secret" channel
