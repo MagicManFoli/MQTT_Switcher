@@ -18,7 +18,7 @@ formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
 rf_pattern = re.compile("[01]{5} [1-5]")
 
 project_name = "MQTT_Switcher"
-revision = 4
+revision = 5
 
 
 def main():
