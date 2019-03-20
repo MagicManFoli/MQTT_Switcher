@@ -1,18 +1,20 @@
 import subprocess
 from logging import Logger
-from typing import Dict
+from typing import Dict, Tuple
 
 import paho.mqtt.client as mqtt
 
 from MQTT_Switcher import rf_pattern
 
+Address_Mapping = Dict[str, Tuple[str, int]]
+
 
 class Bridge:
-    def __init__(self, logger: Logger, mapping: Dict[str, str], root_topic, host="localhost", port=1883):
+    def __init__(self, logger: Logger, topic_to_id: Address_Mapping, root_topic, host="localhost", port=1883):
         self._logger = logger
 
-        self._mappings = mapping
-        self._check_validity(mapping)
+        self._topic_to_id = topic_to_id
+        self._check_validity(topic_to_id)
 
         self._root_topic = root_topic
         self._port = port
@@ -23,7 +25,7 @@ class Bridge:
         self._client.on_message = self._on_msg
 
     @staticmethod
-    def _check_validity(mapping: Dict[str, str]):
+    def _check_validity(mapping: Address_Mapping):
         """
         Used to prevent dict-key exploits when executing shell command
         """
@@ -46,15 +48,15 @@ class Bridge:
         state = msg.payload.decode("utf-8")
 
         self._logger.debug(f"Subtopic '{subtopic}', state '{state}'")
-        self._exec_send(self._mappings[subtopic], state)
+        self._exec_send(*self._topic_to_id[subtopic], state)  # * -> unpack
 
-    def _exec_send(self, rf_id, state):
-        self._logger.info(f"sending state {state} for 433 MHz ID {rf_id}")
+    def _exec_send(self, system_code: str, unit_code: int, state):
+        self._logger.info(f"sending: systemCode={system_code}, unitCode={unit_code}, state={state}")
 
         try:
             # this is unsafe but I see no other "easy" way
             # this should eventually be replaced by "rpi-rf"
-            return_value = subprocess.run(["/home/pi/raspberry-remote/send", str(rf_id), str(state)],
+            return_value = subprocess.run(["/home/pi/raspberry-remote/send", system_code, unit_code, state],
                                           check=True, capture_output=True, text=True,
                                           timeout=10)
             self._logger.debug("STDOUT:" + return_value.stdout)
