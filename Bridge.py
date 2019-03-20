@@ -8,12 +8,11 @@ from MQTT_Switcher import rf_pattern
 
 
 class Bridge:
-
     def __init__(self, logger: Logger, mapping: Dict[str, str], root_topic, host="localhost", port=1883):
         self._logger = logger
 
         self._mappings = mapping
-        self.check_validity(mapping)
+        self._check_validity(mapping)
 
         self._root_topic = root_topic
         self._port = port
@@ -24,7 +23,7 @@ class Bridge:
         self._client.on_message = self._on_msg
 
     @staticmethod
-    def check_validity(mapping: Dict[str, str]):
+    def _check_validity(mapping: Dict[str, str]):
         """
         Used to prevent dict-key exploits when executing shell command
         """
@@ -54,13 +53,14 @@ class Bridge:
 
         try:
             # this is unsafe but I see no other "easy" way
-            bash_command = f"/home/pi/raspberry-remote/send {rf_id} {state}"
-            subprocess.check_call(bash_command.split(), timeout=10)
+            # this should eventually be replaced by "rpi-rf"
+            return_value = subprocess.run(["/home/pi/raspberry-remote/send", rf_id, state],
+                                          check=True, capture_output=True,
+                                          timeout=10)
+            self._logger.debug("\t" + return_value.stdout)
+
         except subprocess.TimeoutExpired:
-            self._logger.error("sending failed, timeout")
-            return
-        except subprocess.CalledProcessError as e:
-            self._logger.error(f"sending failed, process returned {e}")
+            self._logger.error("remote failed, timeout")
             return
 
         self._logger.debug("message was sent")

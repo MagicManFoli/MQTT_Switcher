@@ -8,8 +8,8 @@ import sys
 import time
 from logging.handlers import RotatingFileHandler
 
+import Bridge
 import mapping
-from Bridge import Bridge
 
 if sys.version_info[1] < 6:
     raise EnvironmentError("Can't run in pre 3.6 Environments!")
@@ -25,7 +25,7 @@ def main():
     logger = get_logger(project_name)
     logger.info(f" --- Starting {project_name} [v{revision}], a tool to transfer MQTT commands to 433MHz --- ")
 
-    bridge = Bridge(logger, mapping.topic_to_id, mapping.root_topic, mapping.mqtt_host, mapping.mqtt_port)
+    bridge = Bridge.Bridge(logger, mapping.topic_to_id, mapping.root_topic, mapping.mqtt_host, mapping.mqtt_port)
 
     # try multiple times, waiting for broker to get online
     for t_retry in mapping.restart_delays:
@@ -36,7 +36,11 @@ def main():
             raise RuntimeError("Reached unreachable code")
         except ConnectionRefusedError:
             logger.warning(f"Connection failed, trying again in {t_retry} seconds")
+            # hibernate here until another try is due
             time.sleep(t_retry)
+        except Exception as e:
+            logger.exception(e)
+            raise
 
     # give up
     raise ConnectionError(f"Unable to connect to service after {mapping.restart_delays} tries")
