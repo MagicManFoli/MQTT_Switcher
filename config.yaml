@@ -21,15 +21,14 @@ topic_to_id:
 
 # --- optional to change
 
-timeout_restart_delays:
-  # in seconds
+timeout_restart_delays__s:
   - 1
   - 60
   - 60 * 60
 
 repetitions:
-  amount: 5
-  sleep: 20  # in ms
+  number: 5
+  sleep__s: 0.1
 
 
 ...

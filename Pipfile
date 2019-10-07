@@ -6,3 +6,4 @@ name = "pypi"
 [packages]
 paho-mqtt = "*"
 # rpi-rf = "*"
+ruamel-yaml = "*"
