@@ -1,0 +1,35 @@
+---
+# MODIFY TO ADD ENTRIES!
+
+# --- necessary to change
+
+mqtt_address:
+  host: "192.168.178.100"
+  # def for MQTT: 1883
+  port: 1883
+
+mqtt_root_topic: "Switches/#"
+
+# map subtopics to socket ids
+# first block is your system-code (network-id), second your unit-code (device-id)
+# Most remotes have 4 buttons/channels (sockets 5), which leaves a
+# "secret" channel 5 per system-code used.
+topic_to_id:
+  living: ["01010", "1"]
+  office: ["01010", "2"]
+  printer: ["01010", "5"]
+
+# --- optional to change
+
+timeout_restart_delays:
+  # in seconds
+  - 1
+  - 60
+  - 60 * 60
+
+repetitions:
+  amount: 5
+  sleep: 20  # in ms
+
+
+...

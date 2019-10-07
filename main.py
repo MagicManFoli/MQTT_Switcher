@@ -11,12 +11,12 @@ import Bridge
 import mapping
 
 if sys.version_info[1] < 6:
-    raise EnvironmentError("Can't run in pre 3.6 Environments!")
+    raise EnvironmentError("Can't run in pre 3.6 environments!")
 
 formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
 
 project_name = "MQTT_Switcher"
-revision = 5
+revision = 0.6
 
 
 def main():
