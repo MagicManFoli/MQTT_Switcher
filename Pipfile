@@ -5,5 +5,6 @@ name = "pypi"
 
 [packages]
 paho-mqtt = "*"
-# rpi-rf = "*"
+rpi-rf = "*"
 ruamel-yaml = "*"
+rpi-gpio = "==0.7.0"
