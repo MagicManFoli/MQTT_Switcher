@@ -40,6 +40,9 @@ def main():
 
     bridge.cleanup()
 
+    logger.info(f"Everything done and cleaned up, Goodbye!")
+
+
 def get_args() -> Dict:
     parser = argparse.ArgumentParser(project_name)
     parser.add_argument("-f", "--config_file",
@@ -54,6 +57,7 @@ def get_args() -> Dict:
     if not config_file.is_file():
         raise FileNotFoundError("No config file passed!")
 
+    # prevent weird expansion bombs and stuff without needing many restrictions
     yaml = YAML(typ='safe')
     data = yaml.load(config_file)
     return data

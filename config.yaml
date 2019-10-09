@@ -10,10 +10,11 @@ mqtt_address:
 
 mqtt_root_topic: "Switches/#"
 
+# look for wiringpi access pins, see readme for more hints
 rf_gpio: 17
 
 # needs to be read in with rpi-rf or similar,
-# I have not found the formula from system & device yet
+# I have not found the formula from system + device + state yet
 topic_to_rf_code:
   # [OFF, ON]
   living: [4474196, 4474193]
