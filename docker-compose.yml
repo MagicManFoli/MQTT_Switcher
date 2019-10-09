@@ -1,0 +1,12 @@
+version: '3'
+
+# --update structure to newer suggestions:
+# restart-policy
+
+
+
+services:
+
+  mqtt_switcher:
+    image: modischfabrications/mqtt_switcher:latest
+    restart: unless-stopped
