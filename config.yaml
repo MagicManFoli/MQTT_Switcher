@@ -10,14 +10,16 @@ mqtt_address:
 
 mqtt_root_topic: "Switches/#"
 
-# map subtopics to socket ids
-# first block is your system-code (network-id), second your unit-code (device-id)
-# Most remotes have 4 buttons/channels (sockets 5), which leaves a
-# "secret" channel 5 per system-code used.
-topic_to_id:
-  living: ["01010", "1"]
-  office: ["01010", "2"]
-  printer: ["01010", "5"]
+rf_gpio: 17
+
+# needs to be read in with rpi-rf or similar,
+# I have not found the formula from system & device yet
+topic_to_rf_code:
+  # [OFF, ON]
+  living: [4474196, 4474193]
+  office: [4477268, 4477265]
+  printer: [0, 1]
+
 
 # --- optional to change
 
