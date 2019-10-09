@@ -55,7 +55,7 @@ def get_args() -> Dict:
 
     config_file: Path = args.config_file
     if not config_file.is_file():
-        raise FileNotFoundError("No config file passed!")
+        raise FileNotFoundError("No config file found!")
 
     # prevent weird expansion bombs and stuff without needing many restrictions
     yaml = YAML(typ='safe')
