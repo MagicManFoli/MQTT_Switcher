@@ -2,6 +2,7 @@ import time
 from logging import Logger
 from typing import Dict, Tuple, Iterable
 
+import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt
 from rpi_rf import RFDevice
 
@@ -87,3 +88,9 @@ class Bridge:
         raise ConnectionError(f"Unable to connect to service after {timeout_restart_delays} tries")
 
     # TODO: def run_async
+    def cleanup(self):
+        self._client.disconnect()
+
+        # prevent "RuntimeWarning: This channel is already in use, continuing anyway.
+        #  Use GPIO.setwarnings(False) to disable warnings."
+        GPIO.cleanup()

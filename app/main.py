@@ -32,9 +32,13 @@ def main():
     logger.info(f"Config parameters: {config}")
 
     bridge = Bridge.Bridge(logger, config)
-    # start blocking
-    bridge.run(config["timeout_restart_delays__s"])
+    try:
+        # start blocking
+        bridge.run(config["timeout_restart_delays__s"])
+    except KeyboardInterrupt:
+        logger.warning(f"Killed by CTRL+C, cleaning up")
 
+    bridge.cleanup()
 
 def get_args() -> Dict:
     parser = argparse.ArgumentParser(project_name)
