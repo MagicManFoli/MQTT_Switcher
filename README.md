@@ -59,6 +59,10 @@ https://github.com/sui77/rc-switch/blob/master/RCSwitch.cpp
 https://github.com/r10r/rcswitch-pi/blob/master/RCSwitch.cpp
 switchOn(SYS: str, DEV: int)     -> 
 
+## Debugging
 
-
+Test script manually with 
+1. `export PYTHONPATH=.`        -> allow relative imports from /app
+2. `python3 app/main.py -f config.yaml`
+3. send MQTT messages with the correct topics
 
