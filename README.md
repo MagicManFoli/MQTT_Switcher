@@ -33,9 +33,9 @@ You need to fill in the config and pass it to the container.
 
 ### Trying to find the pattern between (system id + device id + state) and the rpi-rf code
 
-Sockets: Brennenstuhl ??, very easy and generic device with DIPs
+Sockets: Brennenstuhl RCS 1000SN, very easy and generic device with DIPs for channel selection
 
-#### 
+#### Recordings (view as raw)
 (default config, default pins)
 ["01010", "2"] true: 4477265 [pulselength 308, protocol 1]
 -> 100 0100 0101 0001 0101 0001
@@ -66,7 +66,7 @@ SYS, DEV        RECEIVED        REC (BIN)
 "01010", 5" OFF: ??         -> 0100 0100 XXXX XXXX 0101 0100
 
 
-### References
+#### References
 
 https://github.com/HeptaSean/SocketPi/blob/master/socket_switch.py
 
