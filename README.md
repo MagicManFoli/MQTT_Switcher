@@ -75,6 +75,7 @@ every second bit is 0 and can be ignored -> [0, 1, 4, 5]
 
 last block is on/off -> 1 is on, 4 is off
 
+TODO: diff INPUT -> OUTPUT line by line to find corresponding bits
 
 https://github.com/sui77/rc-switch/blob/master/RCSwitch.cpp
 https://github.com/r10r/rcswitch-pi/blob/master/RCSwitch.cpp
@@ -83,7 +84,17 @@ switchOn(SYS: str, DEV: int)
 ## Developer hints
 
 Test script manually with 
+1. git clone ###
+2. cd MQTT_Switcher
+
+3. git pull
+4. git checkout origin/dockerize
+5. pipenv update
+6. 
+
 1. `export PYTHONPATH=.`        -> allow relative imports from /app
 2. `python3 app/main.py -f config.yaml`
 3. send MQTT messages with the correct topics
 
+Be aware that you are unable to completely use it as it depends on RPI's GPIOs.
+YOu will probably need to comment out the import for that and set a breakpoint somewhere.
