@@ -17,4 +17,4 @@ COPY ./app /app
 # set everything as executable to be sure
 RUN chmod -R +rx /app
 
-ENTRYPOINT ["app/main.py", "-f /config.yaml"]
+CMD ["/app/run.sh"]

@@ -90,10 +90,11 @@ YOu will probably need to comment out the import for that and set a breakpoint s
 Get it to your System:
 1. `git clone ###`
 2. `cd MQTT_Switcher`
+4. `git checkout dockerize`
+4. `chmod +x build.sh`
 
 Update to newest version
-3. `git pull origin dockerize`
-4. `git checkout dockerize`
+3. `git pull [origin dockerize]`
 5. `pipenv update`
 6. `pipenv shell`
 
