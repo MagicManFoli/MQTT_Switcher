@@ -46,7 +46,7 @@ def main():
 def get_args() -> Dict:
     parser = argparse.ArgumentParser(project_name)
     parser.add_argument("-f", "--config_file",
-                        type=Path, default=Path("../config.yaml"),
+                        type=Path, default=Path("./config.yml"),
                         help="Configuration file with mappings to local addresses",
                         required=True, dest="config_file")
 
@@ -55,7 +55,7 @@ def get_args() -> Dict:
 
     config_file: Path = args.config_file
     if not config_file.is_file():
-        raise FileNotFoundError("No config file found!")
+        raise FileNotFoundError(f"No config file found in {config_file.resolve()}!")
 
     # prevent weird expansion bombs and stuff without needing many restrictions
     yaml = YAML(typ='safe')

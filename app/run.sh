@@ -4,5 +4,5 @@
 export PYTHONPATH=.
 
 # execute
-python /app/main.py --file /config.yaml
+python /app/main.py -f /config.yml
 

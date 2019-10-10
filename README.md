@@ -94,6 +94,7 @@ Get it to your System:
 4. `chmod +x build.sh`
 
 Update to newest version
+1. `git reset --hard`
 3. `git pull [origin dockerize]`
 5. `pipenv update`
 6. `pipenv shell`
