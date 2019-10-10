@@ -5,5 +5,7 @@
 pipenv lock -r > requirements.txt
 
 # could be moved to compose
-docker build .
+docker build -t mqtt_switcher:latest .
 
+# relative path will convert to directory
+# docker run -it -v $(pwd)/config.yml:/config.yml mqtt_switcher
