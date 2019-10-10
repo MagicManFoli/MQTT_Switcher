@@ -10,3 +10,11 @@ services:
   mqtt_switcher:
     image: modischfabrications/mqtt_switcher:latest
     restart: unless-stopped
+    # no external ports needed
+    volumes:
+      # GPIO access
+      - /dev/mem/:/dev/mem/
+      # config
+      - ./config.yml:/config.yml
+
+

@@ -83,18 +83,23 @@ switchOn(SYS: str, DEV: int)
 
 ## Developer hints
 
-Test script manually with 
-1. git clone ###
-2. cd MQTT_Switcher
+Be aware that you are unable to completely use it on a desktop as it depends on RPI's GPIOs.
+YOu will probably need to comment out the import for that and set a breakpoint somewhere.
 
-3. git pull
-4. git checkout origin/dockerize
-5. pipenv update
-6. 
+### Test script manually without docker
+Get it to your System:
+1. `git clone ###`
+2. `cd MQTT_Switcher`
 
-1. `export PYTHONPATH=.`        -> allow relative imports from /app
+Update to newest version
+3. `git pull origin dockerize`
+4. `git checkout dockerize`
+5. `pipenv update`
+6. `pipenv shell`
+
+Execute
+1. `export PYTHONPATH=.`        -> enables relative imports from /app
 2. `python3 app/main.py -f config.yaml`
 3. send MQTT messages with the correct topics
 
-Be aware that you are unable to completely use it as it depends on RPI's GPIOs.
-YOu will probably need to comment out the import for that and set a breakpoint somewhere.
+
