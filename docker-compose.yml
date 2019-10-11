@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.6'  # technically 3.7, but it's not supported everywhere
 
 # --update structure to newer suggestions:
 # restart-policy
@@ -16,7 +16,7 @@ services:
     # no external ports needed
     volumes:
       # GPIO access
-      - /dev/mem/:/dev/mem/
+      - /dev/gpiomem/:/dev/gpiomem/
       # resolved to absolute path, relative paths will convert to directory
       # TODO: try https://docs.docker.com/compose/compose-file/#configs
       - $(pwd)/config.yml:/config.yml
