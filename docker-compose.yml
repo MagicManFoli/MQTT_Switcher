@@ -8,6 +8,8 @@ version: '3'
 services:
 
   mqtt_switcher:
+    # build is tagged with image automatically
+    build: .
     image: modischfabrications/mqtt_switcher:latest
     restart: unless-stopped
     # no external ports needed
@@ -15,6 +17,7 @@ services:
       # GPIO access
       - /dev/mem/:/dev/mem/
       # config
-      - ./config.yml:/config.yml
+      - # TODO: try https://docs.docker.com/compose/compose-file/#configs
+      - $(pwd)/config.yml:/config.yml
 
 
