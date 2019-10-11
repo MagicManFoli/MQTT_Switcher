@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 # --update structure to newer suggestions:
 # restart-policy
@@ -6,6 +6,7 @@ version: '3'
 
 
 services:
+  # ...
 
   mqtt_switcher:
     # build is tagged with image automatically
@@ -16,8 +17,9 @@ services:
     volumes:
       # GPIO access
       - /dev/mem/:/dev/mem/
-      # config
-      - # TODO: try https://docs.docker.com/compose/compose-file/#configs
+      # resolved to absolute path, relative paths will convert to directory
+      # TODO: try https://docs.docker.com/compose/compose-file/#configs
       - $(pwd)/config.yml:/config.yml
 
+  # ...
 
