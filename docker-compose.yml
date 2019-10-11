@@ -15,13 +15,13 @@ services:
     restart: unless-stopped
     # no external ports needed
     devices:
-      # GPIO access
-      - /dev/mem/:/dev/mem/
-    #      - /dev/gpiomem/:/dev/gpiomem/
+      # GPIO access (/dev/mem is not mountable, but gpiomem is enough)
+      - /dev/gpiomem:/dev/gpiomem
     volumes:
       # resolved to absolute path, relative paths will convert to directory
+      # docker build needs absolute path, use $(pwd) instad of .
       # TODO: try https://docs.docker.com/compose/compose-file/#configs
-      - $(pwd)/config.yml:/config.yml
+      - ./config.yml:/config.yml
 
   # ...
 
