@@ -12,6 +12,8 @@ services:
     # build is tagged with image automatically
     build: .
     image: modischfabrications/mqtt_switcher:latest
+    # cleanup GPIO with CTRL+C/SIGINT
+    stop_signal: SIGINT
     restart: unless-stopped
     # no external ports needed
     devices:
