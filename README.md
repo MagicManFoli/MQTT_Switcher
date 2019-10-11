@@ -22,6 +22,10 @@ Because this script accesses GPIO (which can be dangerous) you need to manually 
 1. Allow yourself access to GPIOs with `usermod -aG gpio modischpi`
 2. Relog/Restart (*yes I really mean that*) to update group policies for your account
 
+You might get the message `RuntimeError: No access to /dev/mem.  Try running as root!`, 
+this is an indicator that your previous step did not work (or you forgot to restart).
+You can also try exposing /dev/gpiomem instead, which is a subset of mem.
+
 It might be necessary to configure your Pi to wait for network connections before starting this service.
 Example setup for raspbian-style systems:  
 1. `sudo raspi-config` -> Boot -> Wait for Network at Boot  

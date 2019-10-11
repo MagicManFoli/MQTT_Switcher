@@ -36,6 +36,7 @@ def main():
         # start blocking
         bridge.run(config["timeout_restart_delays__s"])
     except KeyboardInterrupt:
+        # will also catch SIGINT
         logger.warning(f"Killed by CTRL+C, cleaning up")
 
     bridge.cleanup()
