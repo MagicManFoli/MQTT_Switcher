@@ -14,9 +14,11 @@ services:
     image: modischfabrications/mqtt_switcher:latest
     restart: unless-stopped
     # no external ports needed
-    volumes:
+    devices:
       # GPIO access
-      - /dev/gpiomem/:/dev/gpiomem/
+      - /dev/mem/:/dev/mem/
+    #      - /dev/gpiomem/:/dev/gpiomem/
+    volumes:
       # resolved to absolute path, relative paths will convert to directory
       # TODO: try https://docs.docker.com/compose/compose-file/#configs
       - $(pwd)/config.yml:/config.yml
