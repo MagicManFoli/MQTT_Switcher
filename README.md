@@ -60,15 +60,18 @@ Example setup for raspbian-style systems:
 
 ----------------------------------------------
 
-## Code configurations
+## Code configurations (WIP)
 
 You need to fill in the config and pass it to the container.
 
 ### Trying to find the pattern between (system id + device id + state) and the rpi-rf code
+**This is WIP and shouldn't be necessary for end users 
+(at least when I figure out the pattern and provide some translator).**
 
-Sockets: Brennenstuhl RCS 1000SN, very easy and generic device with DIPs for channel selection
 
 #### Recordings (view as raw)
+Sockets used: Brennenstuhl RCS 1000SN, very easy and generic device with DIPs for channel selection
+
 (default config, default pins)
 ["01010", "2"] true: 4477265 [pulselength 308, protocol 1]
 -> 100 0100 0101 0001 0101 0001
@@ -116,7 +119,7 @@ switchOn(SYS: str, DEV: int)
 
 ## Developer hints
 
-Be aware that you are unable to completely use it on a desktop as it depends on RPI's GPIOs.
+Be aware that you are unable to run it on a desktop as it depends on RPI's GPIOs.
 YOu will probably need to comment out the import for that and set a breakpoint somewhere.
 
 ### Test script manually without docker
@@ -135,6 +138,6 @@ Update to newest version
 Execute
 1. `export PYTHONPATH=.`        -> enables relative imports from /app
 2. `python3 app/main.py -f config.yaml`
-3. send MQTT messages with the correct topics
+3. send MQTT messages with the correct topics and watch for your sockets
 
 
