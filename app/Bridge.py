@@ -1,15 +1,12 @@
-import re
-import subprocess
 import time
 from logging import Logger
 from typing import Dict, Tuple, Iterable
 
+import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt
+from rpi_rf import RFDevice
 
-Address_Mapping = Dict[str, Tuple[str, str]]
-
-system_code_pattern = re.compile("[01]{5}")
-unit_code_pattern = re.compile("[1-5]")
+Address_Mapping = Dict[str, Tuple[int, int]]
 
 
 class Bridge:
@@ -18,8 +15,7 @@ class Bridge:
     def __init__(self, logger: Logger, config: Dict):
         self._logger = logger
 
-        self._topic_to_id: Address_Mapping = config["topic_to_id"]
-        self._check_validity(self._topic_to_id)
+        self._topic_to_id: Address_Mapping = config["topic_to_rf_code"]
 
         self._root_topic = config["mqtt_root_topic"]
         self._host = config["mqtt_address"]["host"]
@@ -28,23 +24,14 @@ class Bridge:
         self._repetitions_number = config["repetitions"]["number"]
         self._repetitions_sleep__ms = config["repetitions"]["sleep__s"]
 
+        # init MQTT
         self._client = mqtt.Client()
         self._client.on_connect = self._on_con
         self._client.on_message = self._on_msg
 
-    @staticmethod
-    def _check_validity(mapping: Address_Mapping):
-        """
-        Used to prevent dict-key exploits when executing shell command
-        """
-        for system_code, unit_code in mapping.values():
-            if system_code_pattern.match(system_code) is None:
-                raise ValueError(f"Invalid systemCode: {system_code}")
-            if unit_code_pattern.match(unit_code) is None:
-                raise ValueError(f"Invalid unitCode: {unit_code}")
-
-        # could be shorter but less comprehensible:
-        # any(rf_pattern.match(v) is None for v in mappings.TtoID.values())
+        # init 433MHz
+        self._rfdevice = RFDevice(config["rf_gpio"])
+        self._rfdevice.enable_tx()
 
     def _on_con(self, client, userdata, flags, rc):
         self._logger.debug(f"Connected to MQTT-Broker with Code {rc}")
@@ -55,33 +42,23 @@ class Bridge:
     def _on_msg(self, client, userdata, msg):
         self._logger.debug(f"msg received on topic <{msg.topic}> with payload <{msg.payload}>")
         subtopic = msg.topic.split("/")[1]
-        state = msg.payload.decode("utf-8")
+        state = msg.payload.decode("utf-8")  # 0 or "0" or 1 or "1", the protocol is not that precise
 
         self._logger.debug(f"Subtopic '{subtopic}', state '{state}'")
-        self._exec_send(*self._topic_to_id[subtopic], state)  # * -> unpack
+        # # first code of tuple is off, second on (implicit mapping from position to state)
+        self._exec_send(self._topic_to_id[subtopic][int(state)])
 
-    def _exec_send(self, system_code: str, unit_code: int, state):
-        self._logger.info(f"sending: systemCode={system_code}, unitCode={unit_code}, state={state}")
+    def _exec_send(self, code: int):
+        self._logger.info(f"sending Code={code}")
 
-        try:
-            # this is unsafe but I see no other "easy" way
-            # this should eventually be replaced by "rpi-rf"
-            for _ in range(self._repetitions_number):
-                t_pre_send = time.perf_counter()
-                return_value = subprocess.run(["/home/pi/raspberry-remote/send", system_code, unit_code, state],
-                                              check=True, capture_output=True, text=True,
-                                              timeout=10)
-                self._logger.debug(subprocess.CompletedProcess)
-                # sleep only the time left, sending could take a few milliseconds due to the timings used
-                t_passed = time.perf_counter() - t_pre_send
-                time.sleep(self._repetitions_sleep__ms - t_passed)
+        for _ in range(self._repetitions_number):
+            t_pre_send = time.perf_counter()
+            success = self._rfdevice.tx_code(code)
+            # sleep only the time left, sending could take a few milliseconds due to the timings used
+            t_passed = time.perf_counter() - t_pre_send
+            time.sleep(self._repetitions_sleep__ms - t_passed)
 
-        except subprocess.TimeoutExpired:
-            # don't want to throw exceptions in receiver thread
-            self._logger.error("remote failed, timeout")
-            return
-
-        self._logger.debug("message was sent")
+        self._logger.debug("code was sent successfully")
 
     def run(self, timeout_restart_delays: Iterable):
         """
@@ -110,4 +87,10 @@ class Bridge:
         # okay fine, give up
         raise ConnectionError(f"Unable to connect to service after {timeout_restart_delays} tries")
 
-    # TODO: run async
+    # TODO: def run_async
+    def cleanup(self):
+        self._client.disconnect()
+
+        # prevent "RuntimeWarning: This channel is already in use, continuing anyway.
+        #  Use GPIO.setwarnings(False) to disable warnings."
+        GPIO.cleanup()

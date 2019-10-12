@@ -1,0 +1,6 @@
+-i https://pypi.org/simple
+paho-mqtt==1.4.0
+rpi-rf==0.9.7
+rpi.gpio==0.7.0
+ruamel-yaml==0.16.5
+ruamel.yaml.clib==0.2.0 ; platform_python_implementation == 'CPython' and python_version < '3.8'

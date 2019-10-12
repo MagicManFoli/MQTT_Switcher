@@ -1,0 +1,37 @@
+---
+# MODIFY TO ADD ENTRIES!
+
+# --- necessary to change
+
+mqtt_address:
+  host: "192.168.178.100"
+  # def for MQTT: 1883
+  port: 1883
+
+mqtt_root_topic: "Switches/#"
+
+# look for wiringpi access pins, see readme for more hints
+rf_gpio: 17
+
+# needs to be read in with rpi-rf or similar,
+# I have not found the formula from system + device + state yet
+topic_to_rf_code:
+  # [OFF, ON]
+  living: [4474196, 4474193]
+  office: [4477268, 4477265]
+  printer: [0, 1]
+
+
+# --- optional to change
+
+timeout_restart_delays__s:
+  - 1
+  - 60
+  - 60 * 60
+
+repetitions:
+  number: 5
+  sleep__s: 0.1
+
+
+...

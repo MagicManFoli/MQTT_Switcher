@@ -32,14 +32,22 @@ def main():
     logger.info(f"Config parameters: {config}")
 
     bridge = Bridge.Bridge(logger, config)
-    # start blocking
-    bridge.run(config["timeout_restart_delays__s"])
+    try:
+        # start blocking
+        bridge.run(config["timeout_restart_delays__s"])
+    except KeyboardInterrupt:
+        # will also catch SIGINT
+        logger.warning(f"Killed by CTRL+C, cleaning up")
+
+    bridge.cleanup()
+
+    logger.info(f"Everything done and cleaned up, Goodbye!")
 
 
 def get_args() -> Dict:
     parser = argparse.ArgumentParser(project_name)
     parser.add_argument("-f", "--config_file",
-                        type=Path, default=Path("../config.yaml"),
+                        type=Path, default=Path("./config.yml"),
                         help="Configuration file with mappings to local addresses",
                         required=True, dest="config_file")
 
@@ -48,8 +56,9 @@ def get_args() -> Dict:
 
     config_file: Path = args.config_file
     if not config_file.is_file():
-        raise FileNotFoundError("No config file passed!")
+        raise FileNotFoundError(f"No config file found in {config_file.resolve()}!")
 
+    # prevent weird expansion bombs and stuff without needing many restrictions
     yaml = YAML(typ='safe')
     data = yaml.load(config_file)
     return data

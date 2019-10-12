@@ -5,5 +5,5 @@ name = "pypi"
 
 [packages]
 paho-mqtt = "*"
-# rpi-rf = "*"
+rpi-rf = "*"
 ruamel-yaml = "*"

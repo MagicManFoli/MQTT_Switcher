@@ -1,0 +1,29 @@
+version: '3.6'  # technically 3.7, but it's not supported everywhere
+
+# --update structure to newer suggestions:
+# restart-policy
+
+
+
+services:
+  # ...
+
+  mqtt_switcher:
+    # build is tagged with image automatically
+    build: .
+    image: modischfabrications/mqtt_switcher:latest
+    # allow cleanup with CTRL+C/SIGINT (not sure if that works?)
+    stop_signal: SIGINT
+    restart: unless-stopped
+    # no external ports needed
+    devices:
+      # GPIO access (/dev/mem is not mountable, but gpiomem is enough)
+      - /dev/gpiomem:/dev/gpiomem
+    volumes:
+      # docker build needs absolute path (compose does not), use $(pwd) instad of .
+      # use configs when deploying as a docker swarm, it's not supported for compose
+      # https://docs.docker.com/compose/compose-file/#configs
+      - ./config.yml:/config.yml
+
+  # ...
+
