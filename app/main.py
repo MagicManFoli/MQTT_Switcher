@@ -21,7 +21,7 @@ formatter = "[%(asctime)s][%(levelname)s]: %(message)s"
 
 project_name = "MQTT_Switcher"
 # SemVer, increment major on API changes
-revision = 0.6
+revision = 0.7
 
 
 def main():
