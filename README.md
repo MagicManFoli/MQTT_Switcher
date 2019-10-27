@@ -131,6 +131,11 @@ switchOn(SYS: str, DEV: int)
 Be aware that you are unable to run it on a desktop as it depends on RPI's GPIOs.
 YOu will probably need to comment out the import for that and set a breakpoint somewhere.
 
+### Dependencies
+
+paho-mqtt
+rpi-rf
+
 ### Test script manually without docker
 Get it to your System:
 1. `git clone ###`
