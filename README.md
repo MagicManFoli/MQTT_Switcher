@@ -98,8 +98,8 @@ SYS, DEV        RECEIVED        REC (BIN)
 "11010", 1" ON: 279889      -> 0000 0100 0100 0101 0101 0001 -> 044551
 "11010", 1" OFF: 279892     -> 0000 0100 0100 0101 0101 0100‬ -> 044554
 
-"01010", 5" ON: ??          -> 0100 0100 XXXX XXXX 0101 0001
-"01010", 5" OFF: ??         -> 0100 0100 XXXX XXXX 0101 0100
+"01010", 5" ON: ??          -> 0100 0100 010X 0X0X 0101 0001
+"01010", 5" OFF: ??         -> 0100 0100 010X 0X0X 0101 0100
 
 
 #### References
@@ -112,6 +112,8 @@ every second bit is 0 and can be ignored -> [0, 1, 4, 5]
 last block is on/off -> 1 is on, 4 is off
 
 TODO: diff INPUT -> OUTPUT line by line to find corresponding bits
+
+system is first 5 codes (minus 0-pads) inverted.
 
 https://github.com/sui77/rc-switch/blob/master/RCSwitch.cpp
 https://github.com/r10r/rcswitch-pi/blob/master/RCSwitch.cpp
