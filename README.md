@@ -98,9 +98,16 @@ SYS, DEV        RECEIVED        REC (BIN)
 "11010", 1" ON: 279889      -> 0000 0100 0100 0101 0101 0001 -> 044551
 "11010", 1" OFF: 279892     -> 0000 0100 0100 0101 0101 0100‬ -> 044554
 
-"01010", 5" ON: ??          -> 0100 0100 010X 0X0X 0101 0001
-"01010", 5" OFF: ??         -> 0100 0100 010X 0X0X 0101 0100
+"01010", 5" ON: ??          -> 0100 0100 010X 0X0X 0X0X 0001
+"01010", 5" OFF: ??         -> 0100 0100 010X 0X0X 0X0X 0100
 
+AAAA ABBB BBCC
+
+A: System code, inverted
+B: unit code, inverted
+C: ON = 01; OFF = 10
+
+Pad with 0 on every second position (starting with pos 0).
 
 #### References
 
