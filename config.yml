@@ -19,7 +19,7 @@ topic_to_rf_code:
   # [OFF, ON]
   living: [4474196, 4474193]
   office: [4477268, 4477265]
-  printer: [0, 1]
+  printer: [4478276, 4478273]
 
 
 # --- optional to change
