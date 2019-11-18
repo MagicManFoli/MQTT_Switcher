@@ -100,4 +100,8 @@ Execute
 2. `python3 app/main.py -f config.yaml`
 3. send MQTT messages with the correct topics and watch for your sockets
 
+### Build and Push Docker Image
+1. docker login -u modischfabrications
+2. docker-compose build
+3. docker-compose push
 
