@@ -60,71 +60,17 @@ Example setup for raspbian-style systems:
 
 ----------------------------------------------
 
-## Code configurations (WIP)
+## Code configurations
 
 You need to fill in the config and pass it to the container.
 
-### Trying to find the pattern between (system id + device id + state) and the rpi-rf code
-**This is WIP and shouldn't be necessary for end users 
-(at least when I figure out the pattern and provide some translator).**
+You have a few different options depending on your system:
+1. Self-learning sockets: A
+2. Selectable Codes: A or B
 
-
-#### Recordings (view as raw)
-Sockets used: Brennenstuhl RCS 1000SN, very easy and generic device with DIPs for channel selection
-
-(default config, default pins)
-["01010", "2"] true: 4477265 [pulselength 308, protocol 1]
--> 100 0100 0101 0001 0101 0001
-["01010", "2"] false: 4477268 [pulselength 310, protocol 1]
--> 100 0100 0101 0001 0101 0100
-
-["01010", "1"] true: 4474193 [pulselength 308, protocol 1]
--> 100 0100 0100 0101 0101 | 0001‬
-
-["01010", "1"] false: 4474196
--> 100 0100 0100 0101 0101 0100
-
-
-SYS, DEV        RECEIVED        REC (BIN)
-"01011", 1" ON: 4457809     -> 0100 0100 0000 0101 0101 0001‬ -> 440551
-"01011", 1" OFF: 4457812    -> 0100 0100 0000 0101 0101 0100 -> 440554
-
-"01010", "1" ON: 4474193    -> 0100 0100 0100 0101 0101 0001‬ -> 444551
-"01010", "1" OFF: 4474196   -> 0100 0100 0100 0101 0101 0100 -> 444554
-
-"01010", "2" ON: 4477265    -> 0100 0100 0101 0001 0101 0001 -> 445151
-"01010", "2" OFF: 4477268   -> 0100 0100 0101 0001 0101 0100 -> 445154
-
-"11010", 1" ON: 279889      -> 0000 0100 0100 0101 0101 0001 -> 044551
-"11010", 1" OFF: 279892     -> 0000 0100 0100 0101 0101 0100‬ -> 044554
-
-"01010", 5" ON: 4478273     -> 0100 0100 0101 0101 0100 0001
-"01010", 5" OFF: 4478276‬    -> 0100 0100 0101 0101 0100 0100
-
-AAAA ABBB BBCC
-
-A: System code, inverted
-B: unit code, inverted
-C: ON = 01; OFF = 10
-
-Pad with 0 on every second position (starting with pos 0).
-
-#### References
-
-https://github.com/HeptaSean/SocketPi/blob/master/socket_switch.py
-
-24 bits
-every second bit is 0 and can be ignored -> [0, 1, 4, 5]
-
-last block is on/off -> 1 is on, 4 is off
-
-TODO: diff INPUT -> OUTPUT line by line to find corresponding bits
-
-system is first 5 codes (minus 0-pads) inverted.
-
-https://github.com/sui77/rc-switch/blob/master/RCSwitch.cpp
-https://github.com/r10r/rcswitch-pi/blob/master/RCSwitch.cpp
-switchOn(SYS: str, DEV: int)
+Solutions:  
+A: Read it with a 433MHz receiver. Refer to rpi-rf for that (additional hardware needed!)  
+B: Encode the switch positions you set. Needs a tool, see ![RC_Switch_Code_Converter](https://github.com/ModischFabrications/RC_Switch_Code_Converter)
 
 ## Developer hints
 
