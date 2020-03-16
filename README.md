@@ -1,3 +1,11 @@
+## DEPRICATED!!
+Just buy a dedicated standalone device, trust me, you don't want to deal with the same shit I did. 
+
+1. Buy a Sonoff RF Bridge
+2. Flash Tasmota
+3. Use topic `cmnd/[tasmota_bridge]/RfCode` with RF payload (e.g. `4477265`). 
+4. Stop twisting your balls and enjoy working on something better.
+
 # MQTT_Switcher
 This short script is used to trigger 433MHz radio sockets from MQTT messages.
 
